@@ -43,6 +43,7 @@ public class FileProcess {
 		
 	}
 	
+	//将制定文件的内容读到控制台的方法
 	public String readToString(String filePath, String encoding){
 		File file = new File(filePath);			//在所给路径filePath下创建一个新的文件f
 		Long fileLength = file.length();		//用fileLength存储文件file的长度（字节数）
@@ -82,6 +83,7 @@ public class FileProcess {
 		
 	}
 	
+	//以某个符号作为分隔符分割字符串并将子字符串放到字符串数组中返回
 	public ArrayList readFile2ArrayList(String filePath) throws IOException{
 		ArrayList wordList = new ArrayList();			//创建一个ArrayList
 		File inputfile = new File(filePath);			//在所给路径下创建一个新的文件inputfile
