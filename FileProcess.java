@@ -1,6 +1,7 @@
 package sjjgzhsj;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -9,16 +10,21 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Scanner;
 
 public class FileProcess {
 
-	public static void main(String[] args){
+	public static void main(String[] args) throws IOException{
 		// TODO 自动生成的方法存根
 		
 		FileProcess fp = new FileProcess();			//实例化FileProcess
 		
-		//将文件a.txt读入
+		/*
+
+		//将文件a.txt读入(测试readToString方法)
 		String fileContent = fp.readToString("/Users/lidawei/Desktop/a.txt", "UTF-8");		
 		//调用readToString方法，将a.txt中的内容存储到字符串fileContent中
 		
@@ -32,7 +38,7 @@ public class FileProcess {
 		
 		
 		
-		//以空格作为分隔符分割字符串并放到字符串数组中，并将分割后的结果打印出来
+		//以空格作为分隔符分割字符串并放到字符串数组中，并将分割后的结果打印出来（测试readFile2ArrayList方法）
 		try {
 			fp.readFile2ArrayList("/Users/lidawei/Desktop/a.txt");
 		} catch (IOException e) {
@@ -40,6 +46,26 @@ public class FileProcess {
 			e.printStackTrace();
 		}
 		
+		*/
+		
+		
+		
+		//将文件20150101018432.txt分割然后存储到ArrayList中，然后再把该ArrayList输出到文件b.txt中（测试writeWordList2File方法）
+		
+		/*
+		String filePath1 = "/Users/lidawei/Desktop/20150101018432.txt";
+		String filePath2 = "/Users/lidawei/Desktop/b.txt";
+		fp.writeWordList2File(fp.readFile2ArrayList(filePath1), filePath2);
+		*/
+		
+		
+		
+		//将wordlist中的内容按字典顺序排序（测试sortWordList方法）
+		
+		/*
+		String filePath1 = "/Users/lidawei/Desktop/a.txt";
+		fp.sortWordList(fp.readFile2ArrayList(filePath1));
+		*/
 		
 	}
 	
@@ -83,7 +109,8 @@ public class FileProcess {
 		
 	}
 	
-	//以某个符号作为分隔符分割字符串并将子字符串放到字符串数组中返回
+	
+	//以某个符号作为分隔符分割字符串并将子字符串放到ArrayList中返回的方法（构造词表）
 	public ArrayList readFile2ArrayList(String filePath) throws IOException{
 		ArrayList wordList = new ArrayList();			//创建一个ArrayList
 		File inputfile = new File(filePath);			//在所给路径下创建一个新的文件inputfile
@@ -102,13 +129,46 @@ public class FileProcess {
 		for(int i=0;i<wordList.size();i++){
 			System.out.println(wordList.get(i).toString());		//打印wordList中的内容
 		}
+		System.out.println();
 		return wordList;
 	
 	}
 	
 	
+	//将分割后的wordlist输出到文件的方法
+	public void writeWordList2File(ArrayList<String> wordlist, String filePath) throws IOException {
+		File f = new File(filePath);
+		BufferedWriter bw = new BufferedWriter(new FileWriter(f));		//先为文件f创建一个FileWriter，然后在为该FileWriter创建一个BufferedWriter
+		for(int i=0;i<wordlist.size();i++){
+			bw.write(wordlist.get(i));									//将wordlist的内容写入文件
+			bw.newLine();
+		}
+		bw.close();
+	}
 	
 	
+	//将wordlist的内容按照字典排序的方法
+	public void sortWordList(ArrayList wordlist) {
+		Collections.sort(wordlist, new ReComparator());		//根据第二个参数（排序器的规定）进行排序，更灵活
+		
+		for(int i=0;i<wordlist.size();i++){
+			System.out.println(wordlist.get(i));			//输出排序后的wordlist
+		}
+		
+	}
 	
-
+	
 }
+
+
+//类ReComparator实现了Comparator的方法，即形成一个按某种规定的排序器
+class ReComparator implements Comparator<String>{		
+
+	@Override
+	public int compare(String o1, String o2) {		//重写compare方法
+		// TODO 自动生成的方法存根
+		return o1.compareTo(o2);			//利用String自带的compareTo方法对输入的两个字符串进行字典顺序的比较
+	}
+	
+}
+
